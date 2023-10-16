@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Search image of all Type engine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: 0;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+body{
+    overflow-x: hidden;
+    background-color: white;
+}
+::-webkit-scrollbar{
+    width: 8px;
+}
+::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+    background-color: white;
+    border-radius: 26px;
+}
+        .input {
+            display: flex;
+            justify-content: center;
+            margin-top:10%;
+        }
+
+        .input input {
+            width: 76vw;
+            margin: auto;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 400;
+            cursor: pointer;
+            border: 1px solid rgb(55, 55, 55);
+            border-radius: 26px;
+        }
+
+        ::placeholder {
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .input input:hover {
+             border: 1px solid white;
+             box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        }
+        .conatainer{
+            margin-top:8%;
+        }
+        .box{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .box div{
+            margin: 12px 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input">
+        <input id="input" type="text" placeholder="search for only images">
+    </div>
+    <div class="conatainer">
+        <div class="box">
+          
+        </div>
+    </div>
+</body>
+<script>
+    let box=document.querySelector('.box');
+async function img(q){
+
+const url =`https://real-time-image-search.p.rapidapi.com/search?query=${q}=us`;
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '2f4809ca3cmsh7cc45ca409e5139p15cff4jsn11255b907f67',
+		'X-RapidAPI-Host': 'real-time-image-search.p.rapidapi.com'
+	}
+};
+
+try {
+	const response = await fetch(url, options);
+	const result = await response.json();
+    let str="";
+	result.data.forEach(element => {
+        str+=`<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="${element.url}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">${element.title}</h5>
+    <p class="card-text"></p>
+    <a target="_blank" href="${element.source_url}" class="btn btn-success">Learn more</a>
+  </div>
+</div>`;
+    });
+box.innerHTML=str;
+} catch (error) {
+	console.error(error);
+}
+}
+
+let input=document.getElementById('input');
+input.addEventListener('input',()=>{
+    img(input.value);
+})
+</script>
+
+</html>
